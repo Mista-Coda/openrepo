@@ -72,6 +72,23 @@ int main() {
 
         repo.host = hostStr.characters;
         repo.path = pathStr.characters;
+    } else if (svStartsWith(&sv, "https://")) {
+        svStrip(&sv, 8, SV_STRIP_FRONT);
+        // This is hardcoded for a github.com length hostname.
+        bool didSub = svSubStr(&sv, &hostStr, 0, 10);
+        if (!didSub) {
+            fprintf(stderr, "[ERROR] Failed to substr the hostname");
+            return 1;
+        }
+
+        didSub = svSubStr(&sv, &pathStr, 11, sv.length);
+        if (!didSub) {
+            fprintf(stderr, "[ERROR] Failed to substr the path");
+            return 1;
+        }
+
+        repo.host = hostStr.characters;
+        repo.path = pathStr.characters;
     }
 
     if (repo.host == NULL || repo.path == NULL) {
