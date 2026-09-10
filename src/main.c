@@ -4,6 +4,17 @@
 #include <stdlib.h>
 #include "stringView.h"
 
+#if defined(_WIN32)
+    #define OPEN_CMD "start "
+#elif defined(__APPLE__) && defined(__MACH__)
+    #define OPEN_CMD "open "
+#elif defined(__linux__)
+    #define OPEN_CMD "xdg-open "
+#else
+    #error "Unsupported platform
+#endif
+
+
 typedef struct {
     char* host;
     char* path;
@@ -64,11 +75,12 @@ int main() {
     }
 
     if (repo.host == NULL || repo.path == NULL) {
-        fprintf(stderr, "[ERROR] Unsupported format.");
+        fprintf(stderr, "[ERROR] Unsupported format.\n");
+        return 1;
     }
 
     StringView finalCommand = {0};
-    svSetStr(&finalCommand, "xdg-open ");
+    svSetStr(&finalCommand, OPEN_CMD);
     svAppend(&finalCommand, "http://");
     svAppend(&finalCommand, repo.host);
     svAppend(&finalCommand, "/");
