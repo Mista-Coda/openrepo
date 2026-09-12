@@ -19,7 +19,20 @@ int isHostSep(int c) {
     return (c != ':' && c != '/');
 }
 
-int main() {
+int main(int argc, char** argv) {
+    nob_shift_args(&argc, &argv);
+    Nob_String_View repoPath = {0};
+
+    if (argc > 0) {
+        repoPath = nob_sv_from_cstr(argv[0]);
+        nob_log(NOB_INFO, "Path provided: %.*s", (int)repoPath.count, repoPath.data);
+    } else {
+        nob_log(NOB_INFO, "Path not provided");
+        repoPath = NOB_SVLIT(".");
+    }
+
+    nob_set_current_dir(nob_temp_sv_to_cstr(repoPath));
+
     // NOTE:
     // While id love to use Nob_Cmd here, from what I know
     // there is no way to read the output of the command without
