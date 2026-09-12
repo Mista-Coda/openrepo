@@ -11,7 +11,7 @@
 #elif defined(__linux__)
     #define OPEN_CMD "xdg-open "
 #else
-    #error "Unsupported platform
+    #error "Unsupported platform"
 #endif
 
 
@@ -57,10 +57,10 @@ int main() {
 
     size_t stripLen = 0;
     if (svStartsWith(&sv, "git@")) {
-        printf("[INFO] Uses SSH");
+        printf("[INFO] Uses SSH\n");
         stripLen = 4;
     } else if (svStartsWith(&sv, "https://")) {
-        printf("[INFO] Uses https");
+        printf("[INFO] Uses https\n");
         stripLen = 8;
     } else {
         fprintf(stderr, "[ERROR] Unsupported format.\n");
