@@ -26,7 +26,6 @@ int main(int argc, char** argv) {
     }
 
     cmd_append(&cmd, "src/main.c");
-    cmd_append(&cmd, "src/stringView.c");
 
     if (!cmd_run(&cmd)) return 1;
 
