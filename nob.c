@@ -1,7 +1,8 @@
-#include <string.h>
 #define NOB_IMPLEMENTATION
 #define NOB_STRIP_PREFIX
 #include "nob.h"
+
+#define INSTALL_PATH "/bin/openrepo"
 
 int main(int argc, char** argv) {
     NOB_GO_REBUILD_URSELF(argc, argv);
@@ -15,7 +16,7 @@ int main(int argc, char** argv) {
             nob_log(NOB_INFO, "Enabling debug");
         } else if (strcmp("install", firstArg) == 0) {
             install = true;
-            nob_log(NOB_INFO, "Installing to /usr/bin");
+            nob_log(NOB_INFO, "Installing to "INSTALL_PATH);
         }
     }
 
@@ -30,7 +31,12 @@ int main(int argc, char** argv) {
     if (!cmd_run(&cmd)) return 1;
 
     if (install) {
-        nob_log(NOB_ERROR, "Not implemetned");
+        Cmd installCmd = {0};
+        cmd_append(&installCmd, "install", "-Dm755", "./openrepo", INSTALL_PATH);
+        if (!cmd_run(&installCmd)) {
+            nob_log(NOB_ERROR, "Failed to install");
+            return 1;
+        }
         return 0;
     }
 }
